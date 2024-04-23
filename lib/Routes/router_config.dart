@@ -6,9 +6,10 @@ import 'package:sankalp/Screens/order_list_screen.dart';
 @immutable
 class RouterConfigRoutes {
   static GoRouter router = GoRouter(
+    initialLocation: '/login',
     routes: [
       GoRoute(
-        path: "/",
+        path: "/login",
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sankalp/Utils/string_const.dart';
 import 'package:sankalp/Widgets/order_list.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class OrderListScreen extends StatelessWidget {
   const OrderListScreen({super.key});
@@ -43,7 +44,15 @@ class OrderListScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          var res = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SimpleBarcodeScannerPage(),
+            ),
+          );
+          debugPrint("Result-->$res");
+        },
         child: const Icon(Icons.add),
       ),
     );

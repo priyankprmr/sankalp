@@ -1,0 +1,11 @@
+{
+    "success": true,
+    "data": {
+        "id": 654,
+        "intCompanyId": 5,
+        "name": "Janak Patel",
+        "email": "janak@mpiric.us",
+        "varPhone": "9428585360"
+    },
+    "message": "Login successfull."
+}

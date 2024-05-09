@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sankalp/Providers/auth_state_provider.dart';
 import 'package:sankalp/Utils/image_const.dart';
 import 'package:sankalp/Utils/string_const.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends ConsumerWidget {
+  LoginScreen({super.key});
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -24,6 +28,7 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
+                    controller: emailController,
                     decoration: const InputDecoration(
                       labelText: StringConst.email,
                     ),
@@ -32,6 +37,7 @@ class LoginScreen extends StatelessWidget {
                     height: 20.0,
                   ),
                   TextFormField(
+                    controller: passwordController,
                     decoration: const InputDecoration(
                       labelText: StringConst.password,
                     ),
@@ -43,7 +49,10 @@ class LoginScreen extends StatelessWidget {
                     height: 50.0,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.go('/products');
+                        ref.read(authStateProvider.notifier).login(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
                       },
                       child: const Text(
                         StringConst.signIn,

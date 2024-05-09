@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:sankalp/Routes/router_config.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sankalp/Providers/is_logged_in_provider.dart';
+import 'package:sankalp/Screens/login_screen.dart';
+import 'package:sankalp/Screens/order_list_screen.dart';
 import 'package:sankalp/Utils/design_const.dart';
+import 'package:sankalp/Utils/shared_pref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Shared.pref = await SharedPreferences.getInstance();
+  runApp(
+    const ProviderScope(
+      child: MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -11,12 +22,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routerConfig: RouterConfigRoutes.router,
       theme: ThemeData(
         useMaterial3: false,
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(DesignConst.borderRadius),
@@ -31,6 +41,16 @@ class MainApp extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      home: Consumer(
+        builder: (context, ref, child) {
+          final isLoggedin = ref.watch(isLoggedInProvider);
+          if (isLoggedin) {
+            return const OrderListScreen();
+          } else {
+            return LoginScreen();
+          }
+        },
       ),
     );
   }

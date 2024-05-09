@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sankalp/Models/order.dart';
+import 'package:sankalp/Domain/Models/order.dart';
 import 'package:sankalp/Utils/design_const.dart';
 import 'package:sankalp/Utils/string_const.dart';
 

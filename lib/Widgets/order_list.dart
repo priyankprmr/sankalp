@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sankalp/Models/order.dart';
+import 'package:sankalp/Domain/Models/order.dart';
 import 'package:sankalp/Widgets/order_card.dart';
 
 class OrderList extends StatefulWidget {

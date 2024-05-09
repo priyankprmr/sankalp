@@ -10,4 +10,5 @@ class ApiConst {
 class Endpoints {
   const Endpoints._();
   static const login = 'login';
+  static const getDispatch = 'get_dispatch';
 }

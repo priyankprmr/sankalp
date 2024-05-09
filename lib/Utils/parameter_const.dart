@@ -6,4 +6,7 @@ class ParameterConst {
 
   static const email = 'email';
   static const password = 'password';
+  static const userId = 'id';
+  static const compId = 'comp_id';
+  static const search = 'search';
 }

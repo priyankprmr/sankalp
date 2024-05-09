@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sankalp/Domain/Models/order.dart';
+import 'package:sankalp/Domain/Models/OrderListResponse/order_list_data.dart';
 import 'package:sankalp/Utils/design_const.dart';
 import 'package:sankalp/Utils/string_const.dart';
 
 class OrderCard extends StatelessWidget {
-  final Order order;
+  final OrderData order;
   const OrderCard({
     super.key,
     required this.order,
@@ -22,24 +22,12 @@ class OrderCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  order.productName,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  order.qty,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+            Text(
+              order.orderId??'',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(
               height: 8.0,
@@ -76,19 +64,19 @@ class OrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      order.casrNumber,
+                      order.seqNo??'',
                       style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      order.batchNumber,
+                      order.invoiceNo??'',
                       style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      order.code,
+                      order.partyName??'',
                       style: const TextStyle(
                         fontSize: 16,
                       ),

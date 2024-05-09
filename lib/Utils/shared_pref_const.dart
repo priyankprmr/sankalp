@@ -6,4 +6,5 @@ class SharedPrefConst {
   static const userId = 'userId';
   static const name = 'name';
   static const email = 'email';
+  static const compId = 'compId';
 }

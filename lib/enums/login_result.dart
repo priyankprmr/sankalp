@@ -1,3 +1,1 @@
-enum LoginResult {
-  aborted, success, failure
-}
+enum LoginResult { aborted, success, failure }

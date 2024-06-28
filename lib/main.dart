@@ -34,7 +34,7 @@ class MainApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            shape: WidgetStateProperty.all(
+            shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(DesignConst.borderRadius),
               ),

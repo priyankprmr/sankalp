@@ -23,7 +23,7 @@ class OrderCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              order.orderId??'',
+              order.orderId ?? '',
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -64,19 +64,19 @@ class OrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      order.seqNo??'',
+                      order.seqNo ?? '',
                       style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      order.invoiceNo??'',
+                      order.invoiceNo ?? '',
                       style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      order.partyName??'',
+                      order.partyName ?? '',
                       style: const TextStyle(
                         fontSize: 16,
                       ),

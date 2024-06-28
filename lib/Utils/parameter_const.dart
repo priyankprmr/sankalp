@@ -9,4 +9,5 @@ class ParameterConst {
   static const userId = 'id';
   static const compId = 'comp_id';
   static const search = 'search';
+  static const barcode = 'barcode';
 }

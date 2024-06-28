@@ -8,12 +8,12 @@ class OrderList extends ConsumerWidget {
   const OrderList({super.key});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<List<OrderData>> orderList = ref.watch(orderListProvider(''));
     return RefreshIndicator(
       onRefresh: () {
         orderList = ref.refresh(orderListProvider(''));
-       return Future.delayed(
+        return Future.delayed(
           const Duration(seconds: 1),
         );
       },

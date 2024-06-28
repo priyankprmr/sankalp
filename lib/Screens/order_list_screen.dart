@@ -45,13 +45,15 @@ class OrderListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var res = await Navigator.push(
+          var res = await Navigator.push<String>(
             context,
             MaterialPageRoute(
               builder: (context) => const SimpleBarcodeScannerPage(),
             ),
           );
-          debugPrint("Result-->$res");
+          if (res != null && res.isNotEmpty) {
+            debugPrint("Result-->$res");
+          }
         },
         child: const Icon(Icons.add),
       ),

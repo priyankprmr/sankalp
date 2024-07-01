@@ -17,6 +17,7 @@ class CreateDispatchData extends MapView<String, dynamic> {
   final Iterable<String> batchNumber;
   final String note;
   final String mode;
+  
   CreateDispatchData({
     required this.type,
     required this.orderId,

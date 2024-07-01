@@ -11,4 +11,11 @@ class StringConst {
   static const String casr = 'CASR';
   static const String batch = 'Batch';
   static const String code = 'Code';
+
+  static const String type = 'Type';
+  static const String orderId = 'Order ID';
+  static const String invoiceNO = 'Invoice No.';
+  static const String partyName = 'Party Name';
+  static const String barcodeScan = 'Barcode Scan';
+  static const String qty = 'Quantity';
 }

@@ -7,9 +7,8 @@ class DispatchViewmodel {
     final response = await DispatchService.getPackData(barcode: barcode);
     if (response is Success<GetPackDataResponse>) {
       return response.response;
-    }else{
-    return null;
-
+    } else {
+      return null;
     }
   }
 }

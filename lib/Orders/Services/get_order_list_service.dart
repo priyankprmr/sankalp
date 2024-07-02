@@ -11,11 +11,13 @@ class GetOrderListService {
     required String compId,
   }) async {
     const uri = '${ApiConst.url}${Endpoints.getDispatch}';
+    debugPrint("ORDER LIST URL-->$uri");
     final body = {
       ParameterConst.search: search,
       ParameterConst.userId: userId,
       ParameterConst.compId: compId,
     };
+    debugPrint("ORDER LIST BODY-->$body");
     final response = await http.post(Uri.parse(uri), body: body);
     debugPrint("Status code-->${response.statusCode}");
     debugPrint("Response body-->${response.body}");

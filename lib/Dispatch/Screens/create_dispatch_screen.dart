@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sankalp/Auth/Providers/user_id_provider.dart';
 import 'package:sankalp/Dispatch/Models/Dispatch/create_dispatch_data.dart';
 import 'package:sankalp/Dispatch/Models/product.dart';
 import 'package:sankalp/Dispatch/Utils/dispatch_screen_stream_controller.dart';
@@ -164,8 +165,8 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                                                       productCode: '123456',
                                                       caseNo: '123',
                                                       batchNo: '456',
-                                                      qty: 10,
-                                                      id: 1),
+                                                      qty: '10',
+                                                      id: '1'),
                                                 );
                                                 setState(() {});
                                               },
@@ -184,6 +185,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                                                 );
                                                 if (res != null &&
                                                     res.isNotEmpty) {
+                                                  barcodeController.text = res;
                                                   final packData =
                                                       await DispatchViewmodel()
                                                           .getPackData(
@@ -201,12 +203,10 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                                                         batchNo: packData
                                                                 .batchNumber ??
                                                             '',
-                                                        qty: packData
-                                                                .productQty ??
-                                                            0,
-                                                        id: packData
-                                                                .productId ??
-                                                            0,
+                                                        qty: packData.productQty
+                                                            .toString(),
+                                                        id: packData.productId
+                                                            .toString(),
                                                       ),
                                                     );
                                                     setState(() {});
@@ -330,38 +330,40 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                 height: 50.0,
                 child: ElevatedButton(
                   onPressed: () async {
+                    final userId = ref.read(userIdProvider)!;
+
                     final data = CreateDispatchData(
                       type: 0,
                       orderId: orderIdController.text,
                       invoiceNo: invoiceNoController.text,
                       partyName: partyNameController.text,
                       barcodeScan: barcodeController.text,
-                      id: 1,
-                      item: productsList
-                          .map(
-                            (e) => e.productCode,
-                          )
-                          .toList(),
-                      intItemId: productsList
-                          .map(
-                            (e) => e.id,
-                          )
-                          .toList(),
-                      qty: productsList
-                          .map(
-                            (e) => e.qty,
-                          )
-                          .toList(),
-                      caseNo: productsList
-                          .map(
-                            (e) => e.caseNo,
-                          )
-                          .toList(),
-                      batchNumber: productsList
-                          .map(
-                            (e) => e.batchNo,
-                          )
-                          .toList(),
+                      id: userId,
+                      item: [
+                        ...productsList.map(
+                          (e) => e.productCode,
+                        )
+                      ],
+                      intItemId: [
+                        ...productsList.map(
+                          (e) => e.id,
+                        )
+                      ],
+                      qty: [
+                        ...productsList.map(
+                          (e) => e.qty,
+                        )
+                      ],
+                      caseNo: [
+                        ...productsList.map(
+                          (e) => e.caseNo,
+                        )
+                      ],
+                      batchNumber: [
+                        ...productsList.map(
+                          (e) => e.batchNo,
+                        )
+                      ],
                       note: "note",
                       mode: "add",
                     );

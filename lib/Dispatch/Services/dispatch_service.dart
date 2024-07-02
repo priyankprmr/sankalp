@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sankalp/Dispatch/Models/Dispatch/create_dispatch_data.dart';
 import 'package:sankalp/Dispatch/Models/Dispatch/create_dispatch_response.dart';
@@ -30,7 +32,15 @@ class DispatchService {
   }) async {
     const uri = '${ApiConst.url}${Endpoints.createDispatch}';
 
-    final response = await http.post(Uri.parse(uri), body: createDispatchData);
+    final response = await http.post(
+      Uri.parse(uri),
+      body: jsonEncode(
+        createDispatchData,
+      ),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
     debugPrint("Status code-->${response.statusCode}");
     debugPrint("Response body-->${response.body}");
     switch (response.statusCode) {

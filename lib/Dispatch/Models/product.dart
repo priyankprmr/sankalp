@@ -5,8 +5,8 @@ class Product {
   final String productCode;
   final String caseNo;
   final String batchNo;
-  final int qty;
-  final int id;
+  final String qty;
+  final String id;
 
   const Product({
     required this.productCode,

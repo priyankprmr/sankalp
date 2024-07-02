@@ -9,13 +9,13 @@ class OrderListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: const SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 StringConst.orders,
                 style: TextStyle(
                   fontSize: 20,
@@ -23,19 +23,10 @@ class OrderListScreen extends StatelessWidget {
                 ),
                 textScaler: TextScaler.linear(2.0),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 20.0,
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  labelText: StringConst.searchAllOrders,
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Expanded(
+              Expanded(
                 flex: 3,
                 child: OrderList(),
               ),

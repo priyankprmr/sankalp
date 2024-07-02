@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sankalp/Providers/is_logged_in_provider.dart';
-import 'package:sankalp/Screens/login_screen.dart';
-import 'package:sankalp/Screens/order_list_screen.dart';
+import 'package:sankalp/Auth/Providers/is_logged_in_provider.dart';
+import 'package:sankalp/Auth/Screens/login_screen.dart';
+import 'package:sankalp/Orders/Screens/order_list_screen.dart';
 import 'package:sankalp/Utils/design_const.dart';
 import 'package:sankalp/Utils/shared_pref.dart';
 import 'package:shared_preferences/shared_preferences.dart';

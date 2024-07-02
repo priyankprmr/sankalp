@@ -1,4 +1,4 @@
-import 'package:sankalp/Domain/Models/LoginResponse/data.dart';
+import 'package:sankalp/Auth/Models/LoginResponse/data.dart';
 import 'package:sankalp/Utils/shared_pref_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart' show immutable;

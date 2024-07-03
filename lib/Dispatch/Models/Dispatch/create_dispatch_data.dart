@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
@@ -27,11 +26,11 @@ class CreateDispatchData extends MapView<String, dynamic> {
             "BarcodeScan": barcodeScan,
             "api": 'true',
             "id": id,
-            "Item": jsonEncode(item),
-            "intItemID": jsonEncode(intItemId),
-            "Qty": jsonEncode(qty),
-            "CaseNo": jsonEncode(caseNo),
-            "batch_number": jsonEncode(batchNumber),
+            "Item": item,
+            "intItemID": intItemId,
+            "Qty": qty,
+            "CaseNo": caseNo,
+            "batch_number": batchNumber,
             "note": note,
             "mode": mode,
           },

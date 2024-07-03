@@ -29,6 +29,8 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
   TextEditingController orderIdController = TextEditingController();
   TextEditingController invoiceNoController = TextEditingController();
   TextEditingController partyNameController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+  List<TextEditingController> qtyControllers = [];
   late DispatchScreenStreamController hasTextStreamController;
 
   @override
@@ -157,7 +159,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                             height: 60.0,
                             child: barcodeButton(),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -178,6 +180,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                   onPressed: () async {
                     showModalBottomSheet(
                       context: context,
+                      isDismissible: false,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(15.0),
@@ -203,32 +206,46 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                                 height: 10.0,
                               ),
                               TextFormField(
+                                controller: noteController,
                                 maxLines: 6,
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("Create"),
                               ),
                             ],
                           ),
                         );
                       },
+                    ).then(
+                      (value) {
+                        final userId = ref.read(userIdProvider)!;
+                        final productsList =
+                            ref.read(productListProvider).productList;
+                        final data = CreateDispatchData(
+                          type: 0,
+                          orderId: orderIdController.text,
+                          invoiceNo: invoiceNoController.text,
+                          partyName: partyNameController.text,
+                          barcodeScan: barcodeController.text,
+                          id: userId,
+                          item: [...productsList.map((e) => e.productCode)],
+                          intItemId: [...productsList.map((e) => e.id)],
+                          qty: [...qtyControllers.map((e) => e.text)],
+                          caseNo: [...productsList.map((e) => e.caseNo)],
+                          batchNumber: [...productsList.map((e) => e.batchNo)],
+                          note: noteController.text,
+                          mode: "add",
+                        );
+                        noteController.clear();
+                        createDispatch(data);
+                      },
                     );
-                    // final userId = ref.read(userIdProvider)!;
-                    // final productsList =
-                    //     ref.read(productListProvider).productList;
-                    // final data = CreateDispatchData(
-                    //   type: 0,
-                    //   orderId: orderIdController.text,
-                    //   invoiceNo: invoiceNoController.text,
-                    //   partyName: partyNameController.text,
-                    //   barcodeScan: barcodeController.text,
-                    //   id: userId,
-                    //   item: [...productsList.map((e) => e.productCode)],
-                    //   intItemId: [...productsList.map((e) => e.id)],
-                    //   qty: [...productsList.map((e) => e.qty)],
-                    //   caseNo: [...productsList.map((e) => e.caseNo)],
-                    //   batchNumber: [...productsList.map((e) => e.batchNo)],
-                    //   note: "note",
-                    //   mode: "add",
-                    // );
-                    // createDispatch(data);
                   },
                   child: const Text("Create"),
                 ),
@@ -265,6 +282,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
               return Dismissible(
                 key: UniqueKey(),
                 onDismissed: (direction) {
+                  qtyControllers.removeAt(index);
                   ref.read(productListProvider).remove(index);
                 },
                 child: Card(
@@ -317,9 +335,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                         ),
                         Expanded(
                           child: TextFormField(
-                            controller: TextEditingController(
-                              text: product.qty.toString(),
-                            ),
+                            controller: qtyControllers.elementAt(index),
                             decoration: const InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -398,10 +414,19 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
       qty: packData.productQty.toString(),
       id: packData.productId.toString(),
     );
+    qtyControllers.add(
+      TextEditingController(
+        text: packData.productQty.toString(),
+      ),
+    );
+    for (var element in qtyControllers) {
+      debugPrint(element.text);
+    }
     ref.read(productListProvider.notifier).add(product);
   }
 
   void createDispatch(CreateDispatchData data) {
+    // debugPrint("Data-->${jsonEncode(data)}");
     final viewmodel = DispatchViewmodel();
     viewmodel.createDispatch(createDispatchData: data).then(
       (value) {

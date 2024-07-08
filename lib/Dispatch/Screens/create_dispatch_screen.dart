@@ -289,8 +289,9 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                   elevation: 3,
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(DesignConst.borderRadius),
+                    borderRadius: BorderRadius.circular(
+                      DesignConst.borderRadius,
+                    ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -342,7 +343,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                               labelText: StringConst.qty,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -419,9 +420,6 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
         text: packData.productQty.toString(),
       ),
     );
-    for (var element in qtyControllers) {
-      debugPrint(element.text);
-    }
     ref.read(productListProvider.notifier).add(product);
   }
 

@@ -31,16 +31,19 @@ class DispatchService {
     required CreateDispatchData createDispatchData,
   }) async {
     const uri = '${ApiConst.url}${Endpoints.createDispatch}';
-
+    final data = jsonEncode(
+      createDispatchData,
+    );
     final response = await http.post(
       Uri.parse(uri),
-      body: jsonEncode(
-        createDispatchData,
-      ),
+      body: data,
       headers: {
         'Content-Type': 'application/json',
       },
     );
+    debugPrint("Request data-->${createDispatchData}");
+    debugPrint("Request data encoded-->${data}");
+
     debugPrint("Status code-->${response.statusCode}");
     debugPrint("Response body-->${response.body}");
     switch (response.statusCode) {

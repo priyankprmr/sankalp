@@ -17,11 +17,12 @@ void main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+     final isLoggedin = ref.watch(isLoggedInProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -34,7 +35,7 @@ class MainApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            shape: MaterialStateProperty.all(
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(DesignConst.borderRadius),
               ),
@@ -42,9 +43,9 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Consumer(
-        builder: (context, ref, child) {
-          final isLoggedin = ref.watch(isLoggedInProvider);
+      home: Builder(
+        builder: (context) {
+         
           if (isLoggedin) {
             return const OrderListScreen();
           } else {

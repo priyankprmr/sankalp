@@ -25,13 +25,14 @@ class CreateDispatchScreen extends ConsumerStatefulWidget {
 class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
   final _scrollController = ScrollController();
   TextEditingController barcodeController = TextEditingController();
-  TextEditingController typeController = TextEditingController();
+  TextEditingController typeController = TextEditingController(text: 'Case');
   TextEditingController orderIdController = TextEditingController();
   TextEditingController invoiceNoController = TextEditingController();
   TextEditingController partyNameController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   List<TextEditingController> qtyControllers = [];
   late DispatchScreenStreamController hasTextStreamController;
+  Map<String, int> types = {"Case": 0, "Individual": 1};
 
   @override
   void initState() {
@@ -86,14 +87,19 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                     const SizedBox(
                       height: 5.0,
                     ),
-                    TextFormField(
-                      controller: typeController,
-                      decoration: const InputDecoration(
-                          // suffix: DropdownButton(
-                          //   items: items,
-                          //   onChanged: onChanged,
-                          // ),
-                          ),
+                    DropdownButtonFormField(
+                      value: typeController.text,
+                      items: types.entries
+                          .map(
+                            (e) => DropdownMenuItem<String>(
+                              value: e.key,
+                              child: Text(e.key),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        typeController.text = value ?? '';
+                      },
                     ),
                     const SizedBox(
                       height: 10.0,
@@ -228,7 +234,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                         final productsList =
                             ref.read(productListProvider).productList;
                         final data = CreateDispatchData(
-                          type: 0,
+                          type: typeController.text == 'Case' ? 0 : 1,
                           orderId: orderIdController.text,
                           invoiceNo: invoiceNoController.text,
                           partyName: partyNameController.text,
@@ -261,6 +267,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final productList = ref.watch(productListProvider).productList;
+        debugPrint("PRODUCT LIST-->$productList");
         if (productList.isEmpty) {
           return const Center(
             child: Text(
@@ -402,8 +409,21 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
     final packData = await DispatchViewmodel().getPackData(
       barcode: barcode,
     );
-    if (packData != null) {
+    if (packData != null && packData.count != 0) {
       setPackData(packData);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          elevation: 4,
+          backgroundColor: Colors.red,
+          content: Text(
+            "Something went wrong !! Please try again.",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
     }
   }
 

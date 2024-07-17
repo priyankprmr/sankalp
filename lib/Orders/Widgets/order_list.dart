@@ -13,6 +13,23 @@ class OrderList extends ConsumerStatefulWidget {
 
 class _OrderListState extends ConsumerState<OrderList> {
   TextEditingController queryController = TextEditingController();
+  final ScrollController _controller = ScrollController();
+  double boundaryOffset = 0.5;
+  int page = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(
+      () {
+        if (_controller.offset >=
+            _controller.position.maxScrollExtent * boundaryOffset) {
+          page++;
+          setState(() {});
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +58,10 @@ class _OrderListState extends ConsumerState<OrderList> {
           Expanded(
             child: FutureBuilder(
               future: ref.watch(
-                orderListFutureProvider(queryController.text).future,
+                orderListFutureProvider({
+                  'search': queryController.text,
+                  'page': page,
+                }).future,
               ),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
@@ -57,7 +77,8 @@ class _OrderListState extends ConsumerState<OrderList> {
                     final data = snapshot.data ?? [];
                     return data.isEmpty
                         ? const Center(
-                            child: Text('No data found',
+                            child: Text(
+                              'No data found',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -68,6 +89,7 @@ class _OrderListState extends ConsumerState<OrderList> {
                         : ListView.builder(
                             shrinkWrap: true,
                             itemCount: data.length,
+                            controller: _controller,
                             itemBuilder: (BuildContext context, int index) {
                               final order = data.elementAt(index);
                               return OrderCard(order: order);

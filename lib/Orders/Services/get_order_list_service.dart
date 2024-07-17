@@ -9,8 +9,9 @@ class GetOrderListService {
     String? search,
     required String userId,
     required String compId,
+    required int page,
   }) async {
-    const uri = '${ApiConst.url}${Endpoints.getDispatch}';
+    var uri = '${ApiConst.url}${Endpoints.getDispatch}?page=$page';
     debugPrint("ORDER LIST URL-->$uri");
     final body = {
       ParameterConst.search: search,

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="sankalp"
+        android:label="Sankalp"
         android:name="${applicationName}"
         android:icon="@mipmap/app_icon"
         android:roundIcon="@mipmap/app_icon_round">

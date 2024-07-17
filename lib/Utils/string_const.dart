@@ -18,4 +18,8 @@ class StringConst {
   static const String partyName = 'Party Name';
   static const String barcodeScan = 'Barcode Scan';
   static const String qty = 'Quantity';
+
+
+  //validation
+  static const String fieldRequired = "This field is required.";
 }

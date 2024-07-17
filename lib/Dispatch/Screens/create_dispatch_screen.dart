@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_nullable
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -33,6 +35,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
   List<TextEditingController> qtyControllers = [];
   late DispatchScreenStreamController hasTextStreamController;
   Map<String, int> types = {"Case": 0, "Individual": 1};
+  final _key = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -53,7 +56,7 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -75,104 +78,122 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0)
                     .copyWith(bottom: 70),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      StringConst.type,
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    DropdownButtonFormField(
-                      value: typeController.text,
-                      items: types.entries
-                          .map(
-                            (e) => DropdownMenuItem<String>(
-                              value: e.key,
-                              child: Text(e.key),
+                child: Form(
+                  key: _key,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        StringConst.type,
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      DropdownButtonFormField(
+                        value: typeController.text,
+                        items: types.entries
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e.key,
+                                child: Text(e.key),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          typeController.text = value ?? '';
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        StringConst.orderId,
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      TextFormField(
+                        controller: orderIdController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringConst.fieldRequired;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        StringConst.invoiceNO,
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      TextFormField(
+                        controller: invoiceNoController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringConst.fieldRequired;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        StringConst.partyName,
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      TextFormField(
+                        controller: partyNameController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return StringConst.fieldRequired;
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: barcodeController,
+                              decoration: const InputDecoration(
+                                labelText: StringConst.barcodeScan,
+                              ),
+                              onChanged: (value) {
+                                if (value.isNotEmpty) {
+                                  hasTextStreamController.add(true);
+                                } else {
+                                  hasTextStreamController.add(false);
+                                }
+                              },
                             ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        typeController.text = value ?? '';
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      StringConst.orderId,
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    TextFormField(
-                      controller: orderIdController,
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      StringConst.invoiceNO,
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    TextFormField(
-                      controller: invoiceNoController,
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      StringConst.partyName,
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    TextFormField(
-                      controller: partyNameController,
-                    ),
-                    const SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: barcodeController,
-                            decoration: const InputDecoration(
-                              labelText: StringConst.barcodeScan,
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 60.0,
+                              child: barcodeButton(),
                             ),
-                            onChanged: (value) {
-                              if (value.isNotEmpty) {
-                                hasTextStreamController.add(true);
-                              } else {
-                                hasTextStreamController.add(false);
-                              }
-                            },
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: 60.0,
-                            child: barcodeButton(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    productList()
-                  ],
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      productList()
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -184,74 +205,95 @@ class _CreateDispatchScreenState extends ConsumerState<CreateDispatchScreen> {
                 height: 60.0,
                 child: ElevatedButton(
                   onPressed: () async {
-                    showModalBottomSheet(
-                      context: context,
-                      isDismissible: false,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(15.0),
-                        ),
-                      ),
-                      builder: (context) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0).copyWith(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                "Add Note",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textScaler: TextScaler.linear(1.3),
-                              ),
-                              const SizedBox(
-                                height: 10.0,
-                              ),
-                              TextFormField(
-                                controller: noteController,
-                                maxLines: 6,
-                              ),
-                              const SizedBox(
-                                height: 10.0,
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text("Create"),
-                              ),
-                            ],
+                    if (_key.currentState!.validate()) {
+                      showModalBottomSheet(
+                        context: context,
+                        isDismissible: false,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(15.0),
                           ),
-                        );
-                      },
-                    ).then(
-                      (value) {
-                        final userId = ref.read(userIdProvider)!;
-                        final productsList =
-                            ref.read(productListProvider).productList;
-                        final data = CreateDispatchData(
-                          type: typeController.text == 'Case' ? 0 : 1,
-                          orderId: orderIdController.text,
-                          invoiceNo: invoiceNoController.text,
-                          partyName: partyNameController.text,
-                          barcodeScan: barcodeController.text,
-                          id: userId,
-                          item: [...productsList.map((e) => e.productCode)],
-                          intItemId: [...productsList.map((e) => e.id)],
-                          qty: [...qtyControllers.map((e) => e.text)],
-                          caseNo: [...productsList.map((e) => e.caseNo)],
-                          batchNumber: [...productsList.map((e) => e.batchNo)],
-                          note: noteController.text,
-                          mode: "add",
-                        );
-                        noteController.clear();
-                        createDispatch(data);
-                      },
-                    );
+                        ),
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0).copyWith(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  "Add Note",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textScaler: TextScaler.linear(1.3),
+                                ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                TextFormField(
+                                  controller: noteController,
+                                  maxLines: 6,
+                                ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text("Create"),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ).then(
+                        (value) {
+                          final userId = ref.read(userIdProvider)!;
+                          final productsList =
+                              ref.read(productListProvider).productList;
+                          if (productsList.isNotEmpty) {
+                            final data = CreateDispatchData(
+                              type: typeController.text == 'Case' ? 0 : 1,
+                              orderId: orderIdController.text,
+                              invoiceNo: invoiceNoController.text,
+                              partyName: partyNameController.text,
+                              barcodeScan: barcodeController.text,
+                              id: userId,
+                              item: [...productsList.map((e) => e.productCode)],
+                              intItemId: [...productsList.map((e) => e.id)],
+                              qty: [...qtyControllers.map((e) => e.text)],
+                              caseNo: [...productsList.map((e) => e.caseNo)],
+                              batchNumber: [
+                                ...productsList.map((e) => e.batchNo)
+                              ],
+                              note: noteController.text,
+                              mode: "add",
+                            );
+                            noteController.clear();
+                            createDispatch(data);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                elevation: 4,
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                  "Minimum one product is required",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    }
+                    
                   },
                   child: const Text("Create"),
                 ),

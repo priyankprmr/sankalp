@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sankalp/Dispatch/Screens/create_dispatch_screen.dart';
 import 'package:sankalp/Orders/Providers/order_list_provider.dart';
 import 'package:sankalp/Orders/Widgets/order_card.dart';
 import 'package:sankalp/Utils/string_const.dart';
@@ -14,7 +15,6 @@ class OrderList extends ConsumerStatefulWidget {
 class _OrderListState extends ConsumerState<OrderList> {
   TextEditingController queryController = TextEditingController();
   final ScrollController _controller = ScrollController();
-  double boundaryOffset = 0.5;
   int page = 1;
 
   @override
@@ -22,9 +22,8 @@ class _OrderListState extends ConsumerState<OrderList> {
     super.initState();
     _controller.addListener(
       () {
-        if (_controller.offset >=
-            _controller.position.maxScrollExtent * boundaryOffset) {
-          page++;
+        if (_controller.position.atEdge) {
+            page++;
           setState(() {});
         }
       },
@@ -35,12 +34,14 @@ class _OrderListState extends ConsumerState<OrderList> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
+        page = 1;
         setState(() {});
         return Future.delayed(
           const Duration(seconds: 1),
         );
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextFormField(
             controller: queryController,
@@ -90,6 +91,7 @@ class _OrderListState extends ConsumerState<OrderList> {
                             shrinkWrap: true,
                             itemCount: data.length,
                             controller: _controller,
+                            padding: const EdgeInsets.only(bottom: 70),
                             itemBuilder: (BuildContext context, int index) {
                               final order = data.elementAt(index);
                               return OrderCard(order: order);
@@ -99,6 +101,27 @@ class _OrderListState extends ConsumerState<OrderList> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 60.0,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push<String>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreateDispatchScreen(),
+                    ),
+                  ).then(
+                    (value) {
+                      setState(() {});
+                    },
+                  );
+                },
+                child: const Text("Create dispatch"),
+              ),
+            ),
+          )
         ],
       ),
     );
